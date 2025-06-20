@@ -2,54 +2,64 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlayZoo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-black text-white font-sans">
-  <header class="p-6 flex items-center justify-between border-b border-gray-800">
-    <h1 class="text-3xl font-bold text-green-400">PlayZoo</h1>
-    <nav class="space-x-6">
-      <a href="#" class="hover:text-green-400">Anasayfa</a>
-      <a href="#" class="hover:text-green-400">Oyunlar</a>
-      <a href="#" class="hover:text-green-400">Top 10</a>
-      <a href="#" class="hover:text-green-400">Hakkımızda</a>
-    </nav>
-  </header>
+  <div id="root"></div>
 
-  <section class="p-10 text-center">
-    <h2 class="text-4xl font-bold mb-4">En Yeni Oyunlar Burada!</h2>
-    <p class="text-gray-400 mb-8">Tarayıcıdan hemen oyna – indirmen gerekmez.</p>
-    <a href="#" class="bg-green-500 text-black px-6 py-3 rounded-full text-lg hover:bg-green-400 transition">
-      Oynamaya Başla
-    </a>
-  </section>
+  <script type="text/babel">
+    function GameCard({ title }) {
+      return (
+        <div className="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
+          <div className="bg-gray-700 h-40 rounded-md mb-3"></div>
+          <h3 className="text-xl font-semibold">{title}</h3>
+          <p className="text-sm text-gray-400">Şimdi Oyna</p>
+        </div>
+      );
+    }
 
-  <section class="px-10 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-    <div class="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-      <div class="bg-gray-700 h-40 rounded-md mb-3"></div>
-      <h3 class="text-xl font-semibold">Zombie Rush</h3>
-      <p class="text-sm text-gray-400">Şimdi Oyna</p>
-    </div>
-    <div class="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-      <div class="bg-gray-700 h-40 rounded-md mb-3"></div>
-      <h3 class="text-xl font-semibold">Kart Yarışı</h3>
-      <p class="text-sm text-gray-400">Şimdi Oyna</p>
-    </div>
-    <div class="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-      <div class="bg-gray-700 h-40 rounded-md mb-3"></div>
-      <h3 class="text-xl font-semibold">Macera Adası</h3>
-      <p class="text-sm text-gray-400">Şimdi Oyna</p>
-    </div>
-    <div class="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-      <div class="bg-gray-700 h-40 rounded-md mb-3"></div>
-      <h3 class="text-xl font-semibold">Kule Savunma</h3>
-      <p class="text-sm text-gray-400">Şimdi Oyna</p>
-    </div>
-  </section>
+    function App() {
+      const games = ["Zombie Rush", "Kart Yarışı", "Macera Adası", "Kule Savunma"];
 
-  <footer class="p-6 text-center text-gray-600 text-sm border-t border-gray-800">
-    © 2025 PlayZoo. Tüm hakları saklıdır.
-  </footer>
+      return (
+        <div className="min-h-screen">
+          <header className="p-6 flex items-center justify-between border-b border-gray-800">
+            <h1 className="text-3xl font-bold text-green-400">PlayZoo</h1>
+            <nav className="space-x-6">
+              <a href="#" className="hover:text-green-400">Anasayfa</a>
+              <a href="#" className="hover:text-green-400">Oyunlar</a>
+              <a href="#" className="hover:text-green-400">Top 10</a>
+              <a href="#" className="hover:text-green-400">Hakkımızda</a>
+            </nav>
+          </header>
+
+          <section className="p-10 text-center">
+            <h2 className="text-4xl font-bold mb-4">En Yeni Oyunlar Burada!</h2>
+            <p className="text-gray-400 mb-8">Tarayıcı üzerinden hemen oyna – indirmen gerekmez.</p>
+            <a href="#" className="bg-green-500 text-black px-6 py-3 rounded-full text-lg hover:bg-green-400 transition">
+              Oynamaya Başla
+            </a>
+          </section>
+
+          <section className="px-10 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {games.map((game, i) => (
+              <GameCard key={i} title={game} />
+            ))}
+          </section>
+
+          <footer className="p-6 text-center text-gray-600 text-sm border-t border-gray-800">
+            © 2025 PlayZoo. Tüm hakları saklıdır.
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
