@@ -2,63 +2,108 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlayZoo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0f0f0f;
+    }
+
+    .game-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .game-card img {
+      transition: transform 0.3s ease;
+    }
+
+    .glass {
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
-<body class="bg-black text-white font-sans">
+<body class="text-white">
   <div id="root"></div>
 
   <script type="text/babel">
-    function GameCard({ title }) {
+    const games = [
+      {
+        title: "Fishing League",
+        iframe: "https://2107b215-e415-41b4-a7ad-347d1b3911ff.poki-gdn.com/9a5dd397-c99d-4130-81f1-464147de4503/index.html?country=TR",
+        thumb: "https://img.poki.com/6dc8c28d-9924-4f07-9d5b-5b25a9f65e9a.png",
+      },
+      {
+        title: "Moto X3M",
+        iframe: "https://games.cdn.famobi.com/html5games/m/moto-x3m/v630/?fg_domain=play.famobi.com",
+        thumb: "https://img.poki.com/0d9ff8ce31b749a73d5cf4f8201f60b7.jpeg"
+      }
+    ];
+
+    function GameCard({ game, onSelect }) {
       return (
-        <div className="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-          <div className="bg-gray-700 h-40 rounded-md mb-3"></div>
-          <h3 className="text-xl font-semibold">{title}</h3>
-          <p className="text-sm text-gray-400">Şimdi Oyna</p>
+        <div
+          className="game-card glass p-3 rounded-xl cursor-pointer hover:scale-105 transition border border-gray-700 shadow-lg"
+          onClick={() => onSelect(game)}
+        >
+          <img src={game.thumb} alt={game.title} className="rounded-md mb-3 h-40 object-cover w-full" />
+          <h3 className="text-lg font-semibold text-center">{game.title}</h3>
         </div>
       );
     }
 
     function App() {
-      const games = ["Zombie Rush", "Kart Yarışı", "Macera Adası", "Kule Savunma"];
+      const [selectedGame, setSelectedGame] = React.useState(null);
 
       return (
-        <div className="min-h-screen">
-          <header className="p-6 flex items-center justify-between border-b border-gray-800">
-            <h1 className="text-3xl font-bold text-green-400">PlayZoo</h1>
-            <nav className="space-x-6">
-              <a href="#" className="hover:text-green-400">Anasayfa</a>
+        <div className="min-h-screen flex flex-col">
+          <header className="p-6 flex items-center justify-between border-b border-gray-800 bg-black bg-opacity-70">
+            <h1 className="text-3xl font-bold text-green-400 tracking-tight">🎮 PlayZoo</h1>
+            <nav className="space-x-6 text-sm">
               <a href="#" className="hover:text-green-400">Oyunlar</a>
-              <a href="#" className="hover:text-green-400">Top 10</a>
+              <a href="#" className="hover:text-green-400">Kategoriler</a>
               <a href="#" className="hover:text-green-400">Hakkımızda</a>
             </nav>
           </header>
 
-          <section className="p-10 text-center">
-            <h2 className="text-4xl font-bold mb-4">En Yeni Oyunlar Burada!</h2>
-            <p className="text-gray-400 mb-8">Tarayıcı üzerinden hemen oyna – indirmen gerekmez.</p>
-            <a href="#" className="bg-green-500 text-black px-6 py-3 rounded-full text-lg hover:bg-green-400 transition">
-              Oynamaya Başla
-            </a>
-          </section>
+          {!selectedGame ? (
+            <section className="flex-1 p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 bg-black">
+              {games.map((game, i) => (
+                <GameCard key={i} game={game} onSelect={setSelectedGame} />
+              ))}
+            </section>
+          ) : (
+            <div className="flex-1 bg-black p-4">
+              <button
+                onClick={() => setSelectedGame(null)}
+                className="mb-4 bg-green-500 px-4 py-2 rounded hover:bg-green-400 text-black font-semibold"
+              >
+                ← Geri
+              </button>
+              <div className="aspect-video w-full max-w-6xl mx-auto border-2 border-green-500 rounded-lg shadow-xl overflow-hidden">
+                <iframe
+                  src={selectedGame.iframe}
+                  className="w-full h-[80vh] border-none"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          )}
 
-          <section className="px-10 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {games.map((game, i) => (
-              <GameCard key={i} title={game} />
-            ))}
-          </section>
-
-          <footer className="p-6 text-center text-gray-600 text-sm border-t border-gray-800">
-            © 2025 PlayZoo. Tüm hakları saklıdır.
+          <footer className="p-6 text-center text-gray-500 text-xs border-t border-gray-800 bg-black bg-opacity-70">
+            © 2025 PlayZoo – Oyun her yerde seninle.
           </footer>
         </div>
       );
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<App />);
   </script>
 </body>
